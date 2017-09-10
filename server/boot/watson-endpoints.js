@@ -1,11 +1,18 @@
 'use strict';
 
 var PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights/v3');
+var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 
 var personality_insights = new PersonalityInsightsV3({
   username: process.env.PERSONALITY_INSIGHTS_USER,
   password: process.env.PERSONALITY_INSIGHTS_PASS,
   version_date: '2016-10-19',
+});
+
+var tone_analyzer = new ToneAnalyzerV3({
+  username: process.env.TONE_ANALYZER_USER,
+  password: process.env.TONE_ANALYZER_PASS,
+  version_date: '2016-05-19',
 });
 
 function determinePersonalityInsightsTest(req, res) {
@@ -33,12 +40,25 @@ function determinePersonalityInsights(text, callback) {
       console.log('error:', err);
       callback(err);
     }
-    console.log(JSON.stringify(response, null, 2));
     callback(null, response);
+  });
+}
+
+function determineToneAnalysis(text, callback) {
+  var input = {
+    text: text,
+  };
+  tone_analyzer.tone(input, function(err, data) {
+    if (err) {
+      console.log('error:', err);
+      return callback(err);
+    }
+    return callback(null, data);
   });
 }
 
 module.exports = {
   determinePersonalityInsightsTest,
   determinePersonalityInsights,
+  determineToneAnalysis,
 };

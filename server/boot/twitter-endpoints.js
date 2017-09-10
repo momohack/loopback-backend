@@ -16,8 +16,6 @@ function getTweets(screenName, callback) {
       console.log('there was an error:', error);
       callback(error);
     }
-    console.log('tweets');
-    console.log(tweets);
     return callback(null, tweets);
   });
 }
