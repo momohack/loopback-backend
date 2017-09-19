@@ -20,7 +20,7 @@ function getPersonalityInsightsByTwitter(req, res) {
           watsonFunctions.determineToneAnalysis(text, function(err, response) {
             if (err) {
               res.send(err);
-            } else {
+            } else if (result) {
               result.toneAnalysis = response;
               res.send(result);
             }
